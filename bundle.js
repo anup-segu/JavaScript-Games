@@ -44,7 +44,50 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Asteroid = __webpack_require__(1);
+	var GameView = __webpack_require__(1);
+	var Game = __webpack_require__(2);
+
+	var canvasEl = document.getElementById("game-canvas");
+
+	var ctx = canvasEl.getContext("2d");
+
+	// console.log(canvasEl);
+
+	var game = new Game;
+
+	var gameView = new GameView(game, ctx);
+
+	gameView.start();
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Game = __webpack_require__(2);
+
+	var GameView = function(game, ctx) {
+	  this.game = game;
+	  this.ctx = ctx;
+	};
+
+	GameView.prototype.start = function () {
+	  setInterval(function () {
+	    this.game.moveObjects();
+	    this.game.draw(this.ctx);
+	  }.bind(this), 20);
+	};
+
+	module.exports = GameView;
+
+	// console.log("This gameview is running");
+
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Asteroid = __webpack_require__(3);
 
 	var Game = function () {
 	  this.asteroids = [];
@@ -64,7 +107,7 @@
 	};
 
 	Game.prototype.draw = function(ctx) {
-	  ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
+	  ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
 
 	  this.asteroids.forEach(function (asteroid) {
 	    asteroid.draw(ctx);
@@ -77,19 +120,19 @@
 	  });
 	};
 
-	Game.DIM_X = 500;
-	Game.DIM_Y = 500;
+	Game.DIM_X = 1000;
+	Game.DIM_Y = 1000;
 	Game.NUM_ASTEROIDS = 3;
 
 	module.exports = Game;
 
 
 /***/ },
-/* 1 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var MovingObject = __webpack_require__(2);
-	var Util = __webpack_require__(3);
+	var MovingObject = __webpack_require__(4);
+	var Util = __webpack_require__(5);
 
 	var Asteroid = function(posOptions){
 	  var options = {};
@@ -103,7 +146,7 @@
 
 	Asteroid.LENGTH = 10;
 	Asteroid.COLOR = "#2F3248";
-	Asteroid.RADIUS = 50;
+	Asteroid.RADIUS = 10;
 
 	Util.inherits(Asteroid, MovingObject);
 
@@ -111,7 +154,7 @@
 
 
 /***/ },
-/* 2 */
+/* 4 */
 /***/ function(module, exports) {
 
 	var MovingObject = function (options) {
@@ -146,7 +189,7 @@
 
 
 /***/ },
-/* 3 */
+/* 5 */
 /***/ function(module, exports) {
 
 	var Util = {};
