@@ -94,6 +94,10 @@
 	  this.addAsteroids();
 	};
 
+	Game.DIM_X = 1000;
+	Game.DIM_Y = 1000;
+	Game.NUM_ASTEROIDS = 100;
+
 	Game.prototype.addAsteroids  = function() {
 	  for(var i = 0; i < Game.NUM_ASTEROIDS; i++) {
 	    var asteroid = new Asteroid({ pos: this.randomPosition(), game: this });
@@ -148,7 +152,7 @@
 	  this.asteroids.forEach( function(asteroid, i) {
 	    this.asteroids.slice(i + 1).forEach(function(otherAsteroid){
 	      if (asteroid.isCollideWith(otherAsteroid)) {
-	        console.log("COLLISION");
+	        asteroid.collideWith(otherAsteroid);
 	      }
 	    });
 	  }.bind(this));
@@ -159,9 +163,10 @@
 	  this.checkCollisions();
 	};
 
-	Game.DIM_X = 1000;
-	Game.DIM_Y = 1000;
-	Game.NUM_ASTEROIDS = 10;
+	Game.prototype.remove = function (asteroid) {
+	  var i = this.asteroids.indexOf(asteroid);
+	  this.asteroids.splice(i, 1);
+	};
 
 	module.exports = Game;
 
@@ -241,6 +246,11 @@
 	  var distance = this.distance(otherObject);
 
 	  return sumRadii >= distance;
+	};
+
+	MovingObject.prototype.collideWith = function(otherObject) {
+	  this.game.remove(this);
+	  this.game.remove(otherObject);
 	};
 
 
