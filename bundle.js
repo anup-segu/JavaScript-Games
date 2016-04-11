@@ -59,6 +59,7 @@
 
 	var gameView = new GameView(game, ctx);
 
+
 	gameView.start();
 
 
@@ -74,10 +75,33 @@
 	};
 
 	GameView.prototype.start = function () {
+	  this.bindKeyHandlers();
 	  setInterval(function () {
 	    this.game.step();
 	    this.game.draw(this.ctx);
 	  }.bind(this), 20);
+	};
+
+	GameView.prototype.bindKeyHandlers = function () {
+	  var gameView = this;
+
+	  var SHIP_SPEED = 2.0;
+
+	  key('w', function () {
+	    gameView.game.ship.power([0, -SHIP_SPEED]);
+	  });
+
+	  key('s', function () {
+	    gameView.game.ship.power([0, SHIP_SPEED]);
+	  });
+
+	  key('a', function () {
+	    gameView.game.ship.power([-SHIP_SPEED, 0]);
+	  });
+
+	  key('d', function () {
+	    gameView.game.ship.power([SHIP_SPEED, 0]);
+	  });
 	};
 
 	module.exports = GameView;
@@ -99,7 +123,7 @@
 
 	Game.DIM_X = 1000;
 	Game.DIM_Y = 1000;
-	Game.NUM_ASTEROIDS = 100;
+	Game.NUM_ASTEROIDS = 10;
 
 	Game.prototype.allObjects = function () {
 	  return this.asteroids.concat([this.ship]);
@@ -264,8 +288,8 @@
 	};
 
 	MovingObject.prototype.collideWith = function(otherObject) {
-	  this.game.remove(this);
-	  this.game.remove(otherObject);
+	  // this.game.remove(this);
+	  // this.game.remove(otherObject);
 	};
 
 
@@ -319,6 +343,11 @@
 	Ship.prototype.relocate = function () {
 	  this.pos = this.game.randomPosition();
 	  this.vel = [0, 0];
+	};
+
+	Ship.prototype.power = function (impulse) {
+	  this.vel[0] += impulse[0];
+	  this.vel[1] += impulse[1];
 	};
 
 	module.exports = Ship;
