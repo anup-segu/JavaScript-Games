@@ -75,7 +75,7 @@
 
 	GameView.prototype.start = function () {
 	  setInterval(function () {
-	    this.game.moveObjects();
+	    this.game.step();
 	    this.game.draw(this.ctx);
 	  }.bind(this), 20);
 	};
@@ -144,9 +144,24 @@
 	  return [x, y];
 	};
 
+	Game.prototype.checkCollisions = function () {
+	  this.asteroids.forEach( function(asteroid, i) {
+	    this.asteroids.slice(i + 1).forEach(function(otherAsteroid){
+	      if (asteroid.isCollideWith(otherAsteroid)) {
+	        console.log("COLLISION");
+	      }
+	    });
+	  }.bind(this));
+	};
+
+	Game.prototype.step = function() {
+	  this.moveObjects();
+	  this.checkCollisions();
+	};
+
 	Game.DIM_X = 1000;
 	Game.DIM_Y = 1000;
-	Game.NUM_ASTEROIDS = 15;
+	Game.NUM_ASTEROIDS = 10;
 
 	module.exports = Game;
 
@@ -170,7 +185,7 @@
 
 	Asteroid.LENGTH = 10;
 	Asteroid.COLOR = "#2F3248";
-	Asteroid.RADIUS = 10;
+	Asteroid.RADIUS = 30;
 
 	Util.inherits(Asteroid, MovingObject);
 
