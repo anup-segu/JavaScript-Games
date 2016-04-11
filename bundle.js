@@ -50,13 +50,14 @@
 	var Asteroid = function(posOptions){
 	  var options = {};
 	  options.pos = posOptions.pos;
-	  options.vel = [10,10];
+	  options.vel = Util.randomVec(Asteroid.LENGTH);
 	  options.color = Asteroid.COLOR;
 	  options.radius = Asteroid.RADIUS;
 
 	  MovingObject.call(this, options);
 	};
 
+	Asteroid.LENGTH = 10;
 	Asteroid.COLOR = "#2F3248";
 	Asteroid.RADIUS = 50;
 
@@ -111,6 +112,12 @@
 	  Surrogate.prototype = ParentClass.prototype;
 	  ChildClass.prototype = new Surrogate;
 	  ChildClass.prototype.constructor = ChildClass;
+	};
+
+	Util.randomVec = function (length) {
+	  var x = Math.random() * length;
+	  var y = Math.random() * length;
+	  return [x, y];
 	};
 
 	module.exports = Util;
