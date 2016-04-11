@@ -88,15 +88,22 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Asteroid = __webpack_require__(3);
+	var Ship = __webpack_require__(6);
 
 	var Game = function () {
 	  this.asteroids = [];
 	  this.addAsteroids();
+
+	  this.ship = new Ship({ pos: [500, 500], game: this });
 	};
 
 	Game.DIM_X = 1000;
 	Game.DIM_Y = 1000;
 	Game.NUM_ASTEROIDS = 100;
+
+	Game.prototype.allObjects = function () {
+	  return this.asteroids.concat([this.ship]);
+	};
 
 	Game.prototype.addAsteroids  = function() {
 	  for(var i = 0; i < Game.NUM_ASTEROIDS; i++) {
@@ -114,14 +121,14 @@
 	Game.prototype.draw = function(ctx) {
 	  ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
 
-	  this.asteroids.forEach(function (asteroid) {
-	    asteroid.draw(ctx);
+	  this.allObjects().forEach(function (object) {
+	    object.draw(ctx);
 	  });
 	};
 
 	Game.prototype.moveObjects = function() {
-	  this.asteroids.forEach(function (asteroid) {
-	    asteroid.move();
+	  this.allObjects().forEach(function (object) {
+	    object.move();
 	  });
 	};
 
@@ -149,10 +156,10 @@
 	};
 
 	Game.prototype.checkCollisions = function () {
-	  this.asteroids.forEach( function(asteroid, i) {
-	    this.asteroids.slice(i + 1).forEach(function(otherAsteroid){
-	      if (asteroid.isCollideWith(otherAsteroid)) {
-	        asteroid.collideWith(otherAsteroid);
+	  this.allObjects().forEach( function(object, i) {
+	    this.allObjects().slice(i + 1).forEach(function(otherObject){
+	      if (object.isCollideWith(otherObject)) {
+	        object.collideWith(otherObject);
 	      }
 	    });
 	  }.bind(this));
@@ -277,6 +284,31 @@
 	};
 
 	module.exports = Util;
+
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var MovingObject = __webpack_require__(4);
+	var Util = __webpack_require__(5);
+
+	var Ship = function (posOptions) {
+	  var options = {};
+	  options.pos = posOptions.pos;
+	  options.vel = [0,0];
+	  options.color = Ship.COLOR;
+	  options.radius = Ship.RADIUS;
+	  options.game = posOptions.game;
+	  MovingObject.call(this, options);
+	};
+
+	Util.inherits(Ship, MovingObject);
+
+	Ship.RADIUS = 10;
+	Ship.COLOR = "#009933";
+
+	module.exports = Ship;
 
 
 /***/ }
