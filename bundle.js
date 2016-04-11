@@ -48,6 +48,8 @@
 	var Game = __webpack_require__(2);
 
 	var canvasEl = document.getElementById("game-canvas");
+	canvasEl.width = Game.DIM_X;
+	canvasEl.height = Game.DIM_Y;
 
 	var ctx = canvasEl.getContext("2d");
 
@@ -96,7 +98,8 @@
 
 	Game.prototype.addAsteroids  = function() {
 	  for(var i = 0; i < Game.NUM_ASTEROIDS; i++) {
-	    this.asteroids.push(new Asteroid({ pos: this.randomPosition() }));
+	    var asteroid = new Asteroid({ pos: this.randomPosition(), game: this });
+	    this.asteroids.push(asteroid);
 	  }
 	};
 
@@ -120,9 +123,32 @@
 	  });
 	};
 
+	Game.prototype.wrap = function (pos) {
+	  var x = pos[0];
+	  var y = pos[1];
+
+	  if (x >= 1000) {
+	    x = 0;
+	    y = 1000 - y;
+	  } else if (x <= 0) {
+	    x = 1000;
+	    y = 1000 - y;
+	  }
+
+	  if (y >= 1000) {
+	    y = 0;
+	    x = 1000 - x;
+	  } else if (y <= 0) {
+	    y = 1000;
+	    x = 1000 - x;
+	  }
+
+	  return [x, y];
+	};
+
 	Game.DIM_X = 1000;
 	Game.DIM_Y = 1000;
-	Game.NUM_ASTEROIDS = 3;
+	Game.NUM_ASTEROIDS = 15;
 
 	module.exports = Game;
 
@@ -140,7 +166,7 @@
 	  options.vel = Util.randomVec(Asteroid.LENGTH);
 	  options.color = Asteroid.COLOR;
 	  options.radius = Asteroid.RADIUS;
-
+	  options.game = posOptions.game;
 	  MovingObject.call(this, options);
 	};
 
@@ -162,6 +188,7 @@
 	  this.vel = options.vel;
 	  this.radius = options.radius;
 	  this.color = options.color;
+	  this.game = options.game;
 	};
 
 	MovingObject.prototype.draw = function (ctx) {
@@ -183,6 +210,8 @@
 	MovingObject.prototype.move = function () {
 	  this.pos[0] += this.vel[0];
 	  this.pos[1] += this.vel[1];
+	  this.pos = this.game.wrap(this.pos);
+	  // console.log(this.pos);
 	};
 
 	module.exports = MovingObject;
