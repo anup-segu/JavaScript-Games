@@ -44,8 +44,38 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var MovingObject = __webpack_require__(1);
-	var Util = __webpack_require__(2);
+	var Asteroid = __webpack_require__(1);
+
+	var Game = function () {
+	  this.asteroids = [];
+	  this.addAsteroids();
+	};
+
+	Game.prototype.addAsteroids  = function() {
+	  for(var i = 0; i < Game.NUM_ASTEROIDS; i++) {
+	    this.asteroids.push(new Asteroid({ pos: this.randomPosition() }));
+	  }
+	};
+
+	Game.prototype.randomPosition = function(){
+	  var x = Math.random() * Game.DIM_X;
+	  var y = Math.random() * Game.DIM_Y;
+	  return [x, y];
+	};
+
+	Game.DIM_X = 500;
+	Game.DIM_Y = 500;
+	Game.NUM_ASTEROIDS = 3;
+
+	module.exports = Game;
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var MovingObject = __webpack_require__(2);
+	var Util = __webpack_require__(3);
 
 	var Asteroid = function(posOptions){
 	  var options = {};
@@ -67,7 +97,7 @@
 
 
 /***/ },
-/* 1 */
+/* 2 */
 /***/ function(module, exports) {
 
 	var MovingObject = function (options) {
@@ -102,7 +132,7 @@
 
 
 /***/ },
-/* 2 */
+/* 3 */
 /***/ function(module, exports) {
 
 	var Util = {};
