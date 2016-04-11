@@ -94,7 +94,7 @@
 	  this.asteroids = [];
 	  this.addAsteroids();
 
-	  this.ship = new Ship({ pos: [500, 500], game: this });
+	  this.ship = new Ship({ pos: this.randomPosition(), game: this });
 	};
 
 	Game.DIM_X = 1000;
@@ -184,6 +184,7 @@
 
 	var MovingObject = __webpack_require__(4);
 	var Util = __webpack_require__(5);
+	var Ship = __webpack_require__(6);
 
 	var Asteroid = function(posOptions){
 	  var options = {};
@@ -200,6 +201,13 @@
 	Asteroid.RADIUS = 30;
 
 	Util.inherits(Asteroid, MovingObject);
+
+	Asteroid.prototype.collideWith = function(otherObject) {
+	  if (otherObject instanceof Ship) {
+	    this.game.remove(this);
+	    otherObject.relocate();
+	  }
+	};
 
 	module.exports = Asteroid;
 
@@ -307,6 +315,11 @@
 
 	Ship.RADIUS = 10;
 	Ship.COLOR = "#009933";
+
+	Ship.prototype.relocate = function () {
+	  this.pos = this.game.randomPosition();
+	  this.vel = [0, 0];
+	};
 
 	module.exports = Ship;
 
