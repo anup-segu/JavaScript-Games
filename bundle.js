@@ -123,7 +123,7 @@
 	  this.asteroids = [];
 	  this.addAsteroids();
 
-	  this.ship = new Ship({ pos: this.randomPosition(), game: this });
+	  this.ship = new Ship({ pos: this.randomPosition(250, 750), game: this });
 	  this.bullets = [];
 	};
 
@@ -150,16 +150,20 @@
 	  }
 	};
 
-	Game.prototype.randomPosition = function (max) {
+	Game.prototype.randomPosition = function (min, max) {
 	  var maxX = max;
+	  var minX = min;
 	  var maxY = max;
-	  if (max === undefined) {
+	  var minY = min;
+	  if (max === undefined || min === undefined) {
 	    maxX = Game.DIM_X;
+	    minX = 0;
 	    maxY = Game.DIM_Y;
+	    minY = 0;
 	  }
 
-	  var x = Math.random() * maxX;
-	  var y = Math.random() * maxY;
+	  var x = Math.random() * (maxX - minX) + minX;
+	  var y = Math.random() * (maxY - minY) + minY;
 	  return [x, y];
 	};
 
@@ -387,7 +391,8 @@
 	Ship.COLOR = "#009933";
 
 	Ship.prototype.relocate = function () {
-	  this.pos = this.game.randomPosition(500);
+	  this.pos = this.game.randomPosition(250, 750);
+	  console.log(this.pos);
 	  this.vel = [0, 0];
 	};
 
