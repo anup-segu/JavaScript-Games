@@ -129,7 +129,7 @@
 
 	Game.DIM_X = 1000;
 	Game.DIM_Y = 1000;
-	Game.NUM_ASTEROIDS = 10;
+	Game.NUM_ASTEROIDS = 5;
 
 	Game.prototype.allObjects = function () {
 	  return this.bullets.concat(this.asteroids).concat([this.ship]);
@@ -150,10 +150,21 @@
 	  }
 	};
 
-	Game.prototype.randomPosition = function(){
-	  var x = Math.random() * Game.DIM_X;
-	  var y = Math.random() * Game.DIM_Y;
+	Game.prototype.randomPosition = function (max) {
+	  var maxX = max;
+	  var maxY = max;
+	  if (max === undefined) {
+	    maxX = Game.DIM_X;
+	    maxY = Game.DIM_Y;
+	  }
+
+	  var x = Math.random() * maxX;
+	  var y = Math.random() * maxY;
 	  return [x, y];
+	};
+
+	Game.prototype.isOutOfBounds = function (pos) {
+	  return (pos[0] >= Game.DIM_X) || (pos[1] >= Game.DIM_Y);
 	};
 
 	Game.prototype.draw = function(ctx) {
@@ -174,20 +185,20 @@
 	  var x = pos[0];
 	  var y = pos[1];
 
-	  if (x >= 1000) {
+	  if (x >= Game.DIM_X) {
 	    x = 0;
-	    y = 1000 - y;
+	    y = Game.DIM_Y - y;
 	  } else if (x <= 0) {
-	    x = 1000;
-	    y = 1000 - y;
+	    x = Game.DIM_X;
+	    y = Game.DIM_Y - y;
 	  }
 
-	  if (y >= 1000) {
+	  if (y >= Game.DIM_Y) {
 	    y = 0;
-	    x = 1000 - x;
+	    x = Game.DIM_Y - x;
 	  } else if (y <= 0) {
-	    y = 1000;
-	    x = 1000 - x;
+	    y = Game.DIM_Y;
+	    x = Game.DIM_X - x;
 	  }
 
 	  return [x, y];
@@ -288,11 +299,21 @@
 	  ctx.fill();
 	};
 
+	MovingObject.prototype.isWrappable = function() {
+	  return true;
+	};
+
 	MovingObject.prototype.move = function () {
 	  this.pos[0] += this.vel[0];
 	  this.pos[1] += this.vel[1];
-	  this.pos = this.game.wrap(this.pos);
-	  // console.log(this.pos);
+
+	  if (this.isWrappable()){
+	    this.pos = this.game.wrap(this.pos);
+	  } else {
+	    if (this.game.isOutOfBounds(this.pos)) {
+	      this.game.remove(this);
+	    }
+	  }
 	};
 
 	MovingObject.prototype.distance = function (otherObject) {
@@ -366,7 +387,7 @@
 	Ship.COLOR = "#009933";
 
 	Ship.prototype.relocate = function () {
-	  this.pos = this.game.randomPosition();
+	  this.pos = this.game.randomPosition(500);
 	  this.vel = [0, 0];
 	};
 
@@ -436,7 +457,15 @@
 	  }
 	};
 
-	Bullet.SPEED = 5;
+	Bullet.prototype.isWrappable = function() {
+	  return false;
+	};
+
+	Bullet.prototype.name = function() {
+	  return "Bullet";
+	};
+
+	Bullet.SPEED = 15;
 
 	module.exports = Bullet;
 
