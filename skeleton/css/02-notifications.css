@@ -5,13 +5,11 @@
   padding: 1px 8px;
 }
 
+li:hover .badge {
+  background: red;
+}
+
 .header-notifications {
-  /*display: none;
-  position: absolute;
-  background: #fff;
-  color: black;
-  white-space: nowrap;
-  border: 1px solid #ccc;*/
   color: black;
   display: none;
   position: absolute;

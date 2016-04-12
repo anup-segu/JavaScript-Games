@@ -3,6 +3,7 @@ body {
   font-family: 'Roboto', sans-serif;
   font-weight: 300, 400, 700;
   font-size: 24px;
+  background: #eee;
 }
 
 .header {
@@ -18,13 +19,14 @@ body {
 
 .header-logo {
   float: left;
+  margin-left: 50px;
   padding: 30px;
   border-left:1px solid white;
   border-right:1px solid white;
 }
 
 .header-nav {
-  margin-right: 30px
+  margin-right: 50px
 }
 
 .header-list {
