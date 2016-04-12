@@ -228,7 +228,7 @@
 
 	var MovingObject = __webpack_require__(4);
 	var Util = __webpack_require__(5);
-	var Ship = __webpack_require__(6);
+	// var Ship = require("./ship") ;
 
 	var Asteroid = function(posOptions){
 	  var options = {};
@@ -247,10 +247,14 @@
 	Util.inherits(Asteroid, MovingObject);
 
 	Asteroid.prototype.collideWith = function(otherObject) {
-	  if (otherObject instanceof Ship) {
+	  if (otherObject.name() === "Ship") {
 	    // this.game.remove(this);
 	    otherObject.relocate();
 	  }
+	};
+
+	Asteroid.prototype.name = function() {
+	  return "Asteroid";
 	};
 
 	module.exports = Asteroid;
@@ -382,6 +386,10 @@
 
 	};
 
+	Ship.prototype.name = function () {
+	  return "Ship";
+	};
+
 	module.exports = Ship;
 
 
@@ -391,9 +399,6 @@
 
 	var MovingObject = __webpack_require__(4);
 	var Util = __webpack_require__(5);
-	var Asteroid = __webpack_require__(3);
-	// var Game = require("./game");
-	// var Ship = require("./ship");
 
 	var Bullet = function (posOptions) {
 	  var options = {};
@@ -411,7 +416,8 @@
 	Bullet.RADIUS = 3;
 
 	Bullet.prototype.collideWith = function(otherObject) {
-	  if (this.game.asteroids.indexOf(otherObject) !== -1) {
+
+	  if (otherObject.name() === "Asteroid") {
 	    this.game.remove(otherObject);
 	    this.game.remove(this);
 	  }
