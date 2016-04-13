@@ -7,5 +7,4 @@ $(function () {
   var rootEl = $('.hanoi');
   var game = new HanoiGame();
   var view = new HanoiView(game,rootEl);
-  view.setupTowers();
 });
