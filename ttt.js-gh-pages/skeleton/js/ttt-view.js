@@ -30,12 +30,13 @@ View.prototype.makeMove = function ($square) {
     }
   }
   catch (err) {
-    alert("Invalid Move");
+    alert(err.msg);
   }
 
   this.isOver();
 
 };
+
 View.prototype.isOver = function () {
   if (this.game.isOver() && this.game.winner()) {
     alert("Congrats to the winner, " + this.game.winner());
@@ -45,6 +46,7 @@ View.prototype.isOver = function () {
     $("li").off("click");
   }
 };
+
 View.prototype.setupBoard = function () {
   var ul = document.createElement("ul");
 
