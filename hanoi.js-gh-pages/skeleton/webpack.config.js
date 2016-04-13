@@ -1,9 +1,12 @@
 module.exports = {
-  context: ,
-  entry: ,
+  context: __dirname,
+  entry: "./js/main.js",
   output: {
-    path: ,
-    publicPath: ,
-    filename:
-  }
+    path: "./js",
+    publicPath: "/js/",
+    filename: "bundle.js",
+    devtoolModuleFilenameTemplate: '[resourcePath]',
+    devtoolFallbackModuleFilenameTemplate: '[resourcePath]?[hash]'
+  },
+  devtool: 'source-maps'
 };
