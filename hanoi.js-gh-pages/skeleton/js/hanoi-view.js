@@ -51,18 +51,34 @@ HanoiView.prototype.clickTower = function() {
     if (that.moveChoice !== undefined) {
       try {
         console.log($ul.attr("data-pos"));
-        that.game.move(that.moveChoice, Number($ul.attr("data-pos")));
+        if (!that.game.move(that.moveChoice, Number($ul.attr("data-pos")))) {
+          throw new Error();
+        }
         console.log(that.game.towers);
         that.moveChoice = undefined;
         that.render();
-      } catch (err) {
-        alert(err.msg);
       }
+      catch (err) {
+        alert("Invalid move!");
+        that.moveChoice = undefined;
+      }
+      $("ul").removeClass("selected");
     } else {
+      $ul.addClass("selected");
       that.moveChoice = Number($ul.attr("data-pos"));
     }
+    that.isOver();
   });
 };
 
+HanoiView.prototype.isOver = function() {
+  if (this.game.isWon()) {
+
+    $(".hanoi").addClass("game-over");
+    $("ul").off("click");
+
+    alert("Congrats");
+  }
+};
 
 module.exports = HanoiView;
