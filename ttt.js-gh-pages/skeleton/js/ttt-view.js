@@ -1,7 +1,6 @@
 var View = function (game, $el) {
   this.$el = $el;
   this.game = game;
-  this.mark = "x";
 };
 
 View.prototype.bindEvents = function () {
@@ -19,8 +18,11 @@ View.prototype.makeMove = function ($square) {
   });
   try {
     this.game.playMove(pos);
+
     var mark = this.game.board.grid[pos[0]][pos[1]];
+
     $square.text(mark);
+
     if (mark === "x") {
       $square.css("background-color", "blue");
     } else {
@@ -30,8 +32,19 @@ View.prototype.makeMove = function ($square) {
   catch (err) {
     alert("Invalid Move");
   }
-};
 
+  this.isOver();
+
+};
+View.prototype.isOver = function () {
+  if (this.game.isOver() && this.game.winner()) {
+    alert("Congrats to the winner, " + this.game.winner());
+    $("li").off("click");
+  } else if (this.game.isOver()) {
+    alert("It's a tie");
+    $("li").off("click");
+  }
+};
 View.prototype.setupBoard = function () {
   var ul = document.createElement("ul");
 
