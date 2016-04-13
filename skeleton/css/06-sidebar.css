@@ -1,1 +1,31 @@
 /* PHASE 6: Sidebar */
+.profile-picture {
+  display: block;
+  margin-top: -120px;
+  z-index: 2;
+  position: relative;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.profile-info {
+  font-size: 16px;
+  margin: 20px 0;
+}
+
+.profile-info > h2 {
+  font-weight: 700;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.profile-nav {
+  font-size: 20px;
+}
+
+
+.profile-nav > li {
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
