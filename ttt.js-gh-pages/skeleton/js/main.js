@@ -7,4 +7,5 @@ $(function () {
   var $el = $("figure");
   var view = new View(game, $el);
   view.setupBoard();
+  view.bindEvents();
 });
