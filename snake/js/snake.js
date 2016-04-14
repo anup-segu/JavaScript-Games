@@ -1,6 +1,7 @@
 var Snake = function () {
   this.direction = "E";
   this.segments = [[0,0],[0,1],[0,2]];
+  this.visitedPositions = [];
 };
 
 Snake.DIRS = {
@@ -11,12 +12,22 @@ Snake.DIRS = {
 };
 
 Snake.prototype.move = function () {
-  this.segments.shift();
+  this.visitedPositions.push(this.segments.shift());
   this.segments.push(
     this.segments[this.segments.length - 1]
       .plus(Snake.DIRS[this.direction])
   );
 
+};
+
+Snake.prototype.grow = function () {
+  if (this.visitedPositions.length < 3) {
+    return;
+  } else {
+    this.segments = this.visitedPositions
+      .slice(this.visitedPositions.length - 3)
+      .concat(this.segments);
+  }
 };
 
 Snake.prototype.turn = function (direction) {
@@ -41,6 +52,26 @@ var Board = function (width, height) {
   this.snake = new Snake();
   this.width = width;
   this.height = height;
+  this.apple = this.createApple();
+};
+
+Board.prototype.move = function() {
+  this.snake.move();
+
+  var head = this.snake.segments[this.snake.segments.length - 1];
+  console.log(head.toString());
+  console.log(this.apple.toString());
+  if (head.toString() === this.apple.toString()) {
+    this.apple = this.createApple();
+    this.snake.grow();
+  }
+};
+
+Board.prototype.createApple = function () {
+  var that = this;
+  var randomRow = Math.floor(Math.random() * that.height);
+  var randomCol = Math.floor(Math.random() * that.width);
+  return [randomRow, randomCol];
 };
 
 Board.prototype.isOver = function () {

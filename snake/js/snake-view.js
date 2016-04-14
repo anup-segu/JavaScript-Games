@@ -61,11 +61,13 @@ View.prototype.setupView = function () {
 };
 
 View.prototype.moveSnake = function () {
-  this.board.snake.move();
+  this.board.move();
 };
 
 View.prototype.render = function () {
   $("li").removeClass("snake");
+  $("li").removeClass("apple");
+
   var that = this;
   $("li").each(function($li){
     var li = this;
@@ -75,6 +77,10 @@ View.prototype.render = function () {
         $(li).addClass("snake");
       }
     });
+
+    if ($(li).attr("data-pos") === that.board.apple.toString()) {
+      $(li).addClass("apple");
+    }
   });
 };
 
