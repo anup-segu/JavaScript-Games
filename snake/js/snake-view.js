@@ -24,7 +24,7 @@ var View = function (board, $el) {
       that.moveSnake();
     } else {
       clearInterval(run);
-      alert("out of bounds");
+      alert("Game Over!");
     }
   }, 300);
 };
