@@ -9,21 +9,24 @@ var View = function (board, $el) {
   var that = this;
   setInterval(function(){
     if (!that.board.isOver()) {
+      that.render();
       that.moveSnake();
+
     }
-  }, 500);
+  }, 300);
 };
 
 View.prototype.bindEvents = function () {
-  $("li").keypress(function (e) {
-      if (e.keyCode === 37) {
-        this.board.snake.turn("W");
-      } else if (e.keyCode === 38) {
-        this.board.snake.turn("N");
-      } else if (e.keyCode === 39) {
-        this.board.snake.turn("E");
-      } else if (e.keyCode === 40) {
-        this.board.snake.turn("S");
+  var that = this;
+  $("body").keypress(function (e) {
+      if (e.keyCode === 97) {
+        that.board.snake.turn("W");
+      } else if (e.keyCode === 119) {
+        that.board.snake.turn("N");
+      } else if (e.keyCode === 100) {
+        that.board.snake.turn("E");
+      } else if (e.keyCode === 115) {
+        that.board.snake.turn("S");
       }
   });
 };
@@ -43,8 +46,23 @@ View.prototype.setupView = function () {
     }
   }
 };
+
 View.prototype.moveSnake = function () {
   this.board.snake.move();
+};
+
+View.prototype.render = function () {
+  $("li").removeClass("snake");
+  var that = this;
+  $("li").each(function($li){
+    var li = this;
+    that.board.snake.segments.forEach( function(el) {
+      var pos = $(li).attr("data-pos");
+      if (el.toString() === pos) {
+        $(li).addClass("snake");
+      }
+    });
+  });
 };
 
 module.exports = View;

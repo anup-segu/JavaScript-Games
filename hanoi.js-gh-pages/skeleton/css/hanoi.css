@@ -73,7 +73,7 @@ li.disk-3 {
 }
 
 .game-over ul {
-  cursor: default !importnat; 
+  cursor: default; 
   border-color: black;
 }
 

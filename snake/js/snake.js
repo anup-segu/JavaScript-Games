@@ -1,13 +1,13 @@
 var Snake = function () {
-  this.direction = "N";
+  this.direction = "E";
   this.segments = [[0,0],[0,1],[0,2]];
 };
 
 Snake.DIRS = {
-  "N": [0,1],
-  "S": [0,-1],
-  "E": [1,0],
-  "W": [-1,0]
+  "N": [-1,0],
+  "S": [1,0],
+  "E": [0,1],
+  "W": [0,-1]
 };
 
 Snake.prototype.move = function () {
