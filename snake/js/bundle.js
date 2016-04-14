@@ -47,7 +47,7 @@
 	var Board = __webpack_require__(1);
 	var View = __webpack_require__(2);
 	$(function () {
-	  var b = new Board(10, 10);
+	  var b = new Board(40, 40);
 	  var view = new View(b, $(".game"));
 	
 	});
@@ -103,7 +103,16 @@
 	};
 	
 	Board.prototype.isOver = function () {
-	  this.snake.isOver();
+	  return this.snake.isOver() || this.isOutOfBounds();
+	};
+	
+	Board.prototype.isOutOfBounds = function () {
+	  var pos = this.snake.segments[this.snake.segments.length - 1];
+	
+	  return pos[0] >= this.width ||
+	    pos[1] >= this.height ||
+	    pos[0] < 0 ||
+	    pos[1] < 0;
 	};
 	
 	Array.prototype.plus = function (direction) {
@@ -129,11 +138,24 @@
 	  this.bindEvents();
 	
 	  var that = this;
-	  setInterval(function(){
+	
+	  // while (!that.board.isOver()) {
+	  //   setTimeout(function() {
+	  //     that.render();
+	  //     that.moveSnake();
+	  //   }, 300);
+	  // }
+	  //
+	  // alert("Game Over");
+	
+	  //
+	  var run = setInterval(function(){
 	    if (!that.board.isOver()) {
 	      that.render();
 	      that.moveSnake();
-	
+	    } else {
+	      clearInterval(run);
+	      alert("out of bounds");
 	    }
 	  }, 300);
 	};

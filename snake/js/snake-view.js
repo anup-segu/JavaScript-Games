@@ -7,11 +7,24 @@ var View = function (board, $el) {
   this.bindEvents();
 
   var that = this;
-  setInterval(function(){
+
+  // while (!that.board.isOver()) {
+  //   setTimeout(function() {
+  //     that.render();
+  //     that.moveSnake();
+  //   }, 300);
+  // }
+  //
+  // alert("Game Over");
+
+  //
+  var run = setInterval(function(){
     if (!that.board.isOver()) {
       that.render();
       that.moveSnake();
-
+    } else {
+      clearInterval(run);
+      alert("out of bounds");
     }
   }, 300);
 };

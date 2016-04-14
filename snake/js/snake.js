@@ -44,7 +44,16 @@ var Board = function (width, height) {
 };
 
 Board.prototype.isOver = function () {
-  this.snake.isOver();
+  return this.snake.isOver() || this.isOutOfBounds();
+};
+
+Board.prototype.isOutOfBounds = function () {
+  var pos = this.snake.segments[this.snake.segments.length - 1];
+
+  return pos[0] >= this.width ||
+    pos[1] >= this.height ||
+    pos[0] < 0 ||
+    pos[1] < 0;
 };
 
 Array.prototype.plus = function (direction) {
