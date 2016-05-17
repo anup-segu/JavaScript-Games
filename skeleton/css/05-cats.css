@@ -1,0 +1,34 @@
+/* PHASE 5: Cats */
+.content-header {
+  position: relative;
+  height: 400px;
+  background: url("http://brightmags.com/wp-content/uploads/2015/05/dogs.jpg");
+  background-position: 10%;
+  background-size: cover;
+  text-shadow: 2px 2px #000;
+  line-height: 20px;
+  z-index: 0;
+}
+
+.content-header > h1 {
+  position: absolute;
+  bottom: 30px;
+  left: 342px;
+  font-size: 35px;
+  color: #fff;
+}
+
+.content-header-add-friend {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  padding: 10px;
+  border: 2px solid black;
+  border-radius: 20px;
+  background: #eee;
+}
+
+.content-header-add-friend:hover {
+  border-color: blue;
+  color: blue;
+}
